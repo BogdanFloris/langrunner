@@ -1,0 +1,4 @@
+{
+  "language": "rust",
+  "code": "fn main() {\n    println!(\"Hello, World!\");\n}\n"
+}
