@@ -1,0 +1,9 @@
+[java]
+cmd = '/bin/bash -c "javac Main.java && java Main"'
+fileName = 'Main.java'
+language = 'java'
+
+[rust]
+cmd = '/bin/bash -c "rustc main.rs && ./main"'
+fileName = 'main.rs'
+language = 'rust'
