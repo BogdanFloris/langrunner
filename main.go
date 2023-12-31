@@ -72,34 +72,15 @@ func runRust(code string) ([]byte, error) {
 		return nil, err
 	}
 
-	// Create output file
-	outFile, err := os.Create(fmt.Sprintf("%s/main", tmpDir))
-	if err != nil {
-		return nil, err
-	}
-	defer outFile.Close()
-
-	// Compile the code
-	cmd := exec.Command(
-		"rustc",
-		codeFile.Name(),
-		"-o",
-		outFile.Name(),
-	)
+	// Compile and run the code
+	cmd := exec.Command("/bin/bash", "-c", "rustc main.rs && ./main")
+	cmd.Dir = tmpDir
 	var stderr bytes.Buffer
+	var stdout bytes.Buffer
 	cmd.Stderr = &stderr
+	cmd.Stdout = &stdout
 	err = cmd.Run()
 	if err != nil {
-		return nil, errors.New(stderr.String())
-	}
-
-	// Run the compiled code and return the output
-	cmd = exec.Command(outFile.Name())
-	var stdout bytes.Buffer
-	cmd.Stdout = &stdout
-	cmd.Stderr = &stderr
-	if err := cmd.Run(); err != nil {
-		println(err.Error())
 		return nil, errors.New(stderr.String())
 	}
 	return stdout.Bytes(), nil
@@ -125,30 +106,19 @@ func runJava(code string) ([]byte, error) {
 		return nil, err
 	}
 
-	// Create output file
-
-	// Compile the code
+	// Compile and run the code
 	cmd := exec.Command(
-		"javac",
-		"-d",
-		tmpDir,
-		codeFile.Name(),
+		"/bin/bash",
+		"-c",
+		"javac Main.java && java Main",
 	)
+	cmd.Dir = tmpDir
+	var stdout bytes.Buffer
 	var stderr bytes.Buffer
+	cmd.Stdout = &stdout
 	cmd.Stderr = &stderr
 	err = cmd.Run()
 	if err != nil {
-		return nil, errors.New(stderr.String())
-	}
-
-	// Run the compiled code and return the output
-	cmd = exec.Command("java", "Main")
-	cmd.Dir = tmpDir
-	var stdout bytes.Buffer
-	cmd.Stdout = &stdout
-	cmd.Stderr = &stderr
-	if err := cmd.Run(); err != nil {
-		println(err.Error())
 		return nil, errors.New(stderr.String())
 	}
 	return stdout.Bytes(), nil
