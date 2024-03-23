@@ -1,14 +1,13 @@
 package main
 
 import (
+	"BogdanFloris/langrunner/internal/spec"
 	"bytes"
 	"errors"
 	"fmt"
 	"net/http"
 	"os"
 	"os/exec"
-
-	"BogdanFloris/langrunner/internal/spec"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
